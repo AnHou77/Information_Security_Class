@@ -80,7 +80,8 @@ class Decrypt:
             # Key 的 index
             j = 0
             for i in text:
-                self.result += chr(ord('A') + ((ord(i) - ord(self.key[j].upper())) + 26) % 26)
+                print((ord(i) ^ ord(self.key[j].upper())))
+                self.result += chr(ord('A') + (ord(i) ^ ord(self.key[j].upper())))
                 j += 1
                 if j == len(self.key):
                     # 讓 key 循環
