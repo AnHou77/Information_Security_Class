@@ -76,16 +76,14 @@ class Decrypt:
                     self.result += mx[rrow][lcol]
 
         if self.way == 'vernam':
+            klen = len(self.key)
             text = self.text.upper()
-            # Key 的 index
-            j = 0
-            for i in text:
-                #  print((ord(i) ^ ord(self.key[j].upper())))
-                self.result += chr(ord('A') + (ord(i) ^ ord(self.key[j].upper())))
-                j += 1
-                if j == len(self.key):
-                    # 讓 key 循環
-                    j = 0
+            for i in range(0, len(text)):
+                #  print(i, self.key[i], text[i], chr(ord('A') + (ord(self.key[i]) ^ ord(text[i]))))
+                fix = (ord(self.key[i]) - ord('A')) ^ (ord(text[i]) - ord('A'))
+                self.key += chr(ord('A') + fix)
+            self.result += self.key[klen:]
+
         if self.way == 'row':
             # 計算出最大子字串長度
             klen = len(self.text) / len(self.key)
