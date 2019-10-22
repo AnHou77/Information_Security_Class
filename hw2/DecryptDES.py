@@ -1,14 +1,16 @@
 # Name: 柯元豪
 # ID: B10615046
-# Last Update: Oct 14, 2019
+# Last Update: Oct 17, 2019
 # Problem statement: Information_Security_Class_HW2
 
 import sys
 import numpy as np
 
+# 接到 key 跟 ciphertext 後 將其轉為 64bits 的 2進碼
 key = bin(int(sys.argv[1], 16))[2:].zfill(64)
 ciphertext = bin(int(sys.argv[2], 16))[2:].zfill(64)
 
+# 建置所有需要用的表
 IP = np.array([58, 50, 42, 34, 26, 18, 10, 2,
                60, 52, 44, 36, 28, 20, 12, 4,
                62, 54, 46, 38, 30, 22, 14, 6,
@@ -93,6 +95,7 @@ S = np.array([[[14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7],
                [2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11]]])
 
 
+# IP置換  即查表
 def IPprocess(text, method):
     new = ""
     for i in method:
@@ -100,11 +103,14 @@ def IPprocess(text, method):
     return new
 
 
+# 建出16組Key
 def keyProcess():
     new = ""
     klist = list([])
+    # PC置換
     for i in PC1:
         new += key[int(i) - 1]
+    # 分割CD做後續處理 先做好第一組
     c = list(new[:28])
     d = list(new[28:])
     k = ''
@@ -112,6 +118,7 @@ def keyProcess():
     for i in PC2:
         k += cd[int(i) - 1]
     klist.append(k)
+    # Loop做完其餘14組key 並做相對應的右移
     for i in range(1, 16):
         stackc = ''
         stackd = ''
@@ -136,14 +143,17 @@ def keyProcess():
     return klist
 
 
+# F function
 def f(text, k):
     output = ''
     new = ''
+    # 做Expansion
     for i in E:
         new += text[i - 1]
     xor = int(new, 2) ^ int(k, 2)
     cnt = 0
     xor = bin(xor)[2:].zfill(48)
+    # 每次取6bits出來查表 將查出來的值轉為2進位存起來
     for i in range(0, 47, 6):
         row = xor[i] + xor[i + 5]
         col = xor[i + 1:i + 5]
@@ -157,10 +167,14 @@ def f(text, k):
     return outputP
 
 
+# DES 解密
 def DES(klist):
+    # 初始置換
     newtext = IPprocess(ciphertext, IP)
+    # 將L R切割 並交換位置
     R = newtext[0:32]
     L = newtext[32:]
+    # 做16次循環後便是plaintext
     for i in range(0, 16):
         stackL = list(L)
         stackR = R
@@ -173,6 +187,4 @@ def DES(klist):
     return IPprocess(L + R, IPinv)
 
 
-k = keyProcess()
-ans = hex(int(DES(keyProcess()), 2))
-print(ans)
+print(hex(int(DES(keyProcess()), 2)))
