@@ -127,23 +127,21 @@ class RSA:
         # 產生公鑰私鑰
         a, b = gen_key(self.p, self.q)
         # 寫入檔案
-        print(a[0], '\n', a[1], '\n', self.p, '\n', self.q, file=open('Private_Key.txt', 'w'))
-        print(b[0], '\n', b[1], '\n', self.p, '\n', self.q, file=open('Public_Key.txt', 'w'))
+        print(a[0], '\n', a[1], '\n', self.p, '\n', self.q, file=open('Private_Key15047.txt', 'w'))
+        print(b[0], '\n', b[1], file=open('Public_Key15047.txt', 'w'))
 
     def encrypt(self, p):
         pub = []
         # 讀公鑰
-        with open('Public_Key.txt', 'r') as f:
+        with open('Public_Key15047.txt', 'r') as f:
             pub.append(int(f.readline()))
             pub.append(int(f.readline()))
-            pub.append(int(f.readline()))
-            pub.append(int(f.readline()))
-        return ChinaRemainderMod(p, pub[1], pub[0], pub[2], pub[3])
+        return SquareMod(p, pub[1], pub[0])
 
     def decrypt(self, c):
         pri = []
         # 讀私鑰
-        with open('Private_key.txt', 'r') as f:
+        with open('Private_key15047.txt', 'r') as f:
             pri.append(int(f.readline()))
             pri.append(int(f.readline()))
             pri.append(int(f.readline()))
