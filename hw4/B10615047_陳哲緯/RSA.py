@@ -37,13 +37,13 @@ def rabin_miller(num):
 
 
 # 產生n bit 大數
-def proBin(w):  # w表示希望产生位数
+def proBin(w):  # w表示產生位數
     rb = []
-    rb.append('1')  # 最高位定为1
+    rb.append('1')  # 最高位定為1
     for i in range(w - 2):
         c = random.choice(['0', '1'])
         rb.append(c)
-    rb.append('1')  # 最低位定为1
+    rb.append('1')  # 最低位定為1
     res = int(''.join(rb), 2)
     return res
 
@@ -59,7 +59,7 @@ def proN(n):
                 p += 2
 
 
-# 化減次方來快速mod
+# 化簡次方來快速mod
 # x^n mod P =  (x*x)^(n/2) mod P = ((x*x)mod P)^(n/2) mod P
 def SquareMod(x, n, p):
     if n == 0:
@@ -72,13 +72,13 @@ def SquareMod(x, n, p):
 
 # 中國餘式定理
 def ChinaRemainderMod(base, exp, M, lexp, rexp):
-    # 左邊
+    # m1
     lx = SquareMod(base, exp, lexp)
     a1 = lx
     M1 = M // lexp
     y1 = SquareMod(M1, lexp - 2, lexp)
 
-    # 右邊
+    # m2
     rx = SquareMod(base, exp, rexp)
     a2 = rx
     M2 = M // rexp
@@ -101,7 +101,7 @@ def ext_gcd(a, b):
 def gen_key(p, q):
     n = p * q
     fy = (p - 1) * (q - 1)  # 歐拉函數
-    e = 65537  # 網路上建議65537
+    e = 65537
 
     # 計算d
     x, y = ext_gcd(e, fy)
