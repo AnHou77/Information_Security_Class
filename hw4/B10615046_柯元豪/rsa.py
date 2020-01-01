@@ -98,10 +98,10 @@ def proKey(p, q):
     return n, e, d
 
 # 用傳入的plaintext 同時做加解密
-def RSA(plaintext):
+def RSA(bits, plaintext):
     # initial
-    p = proPrime(1024)
-    q = proPrime(1024)
+    p = proPrime(bits)
+    q = proPrime(bits)
     n, e, d = proKey(p,q)
     print('\n -----------------------initial----------------------- \n')
     print('p:', p)
@@ -119,14 +119,15 @@ def RSA(plaintext):
 
 # main function
 
-inputtext = sys.argv[1]
+bit = int(sys.argv[1])
+inputtext = sys.argv[2]
 
 # 將輸入的str轉成int 因funtion接的型態為int
 inputtext = bytes(inputtext, encoding='utf8')
 length = len(inputtext)
 plaintext_int = int.from_bytes(inputtext, byteorder='big')
 # 做 RSA 加解密 得ciphertext與plaintext
-ciphertext, plaintext = RSA(plaintext_int)
+ciphertext, plaintext = RSA(bit, plaintext_int)
 
 # 由於RSA做完回傳的型態也是int 因此要將解密結果轉回str 才能確認是否與輸入的plaintext相同
 plaintext = plaintext.to_bytes(length, byteorder="big")
