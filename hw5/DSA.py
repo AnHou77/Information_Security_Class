@@ -1,4 +1,5 @@
 # B10615046 柯元豪
+# B10615047 陳哲緯
 
 import numpy as np
 import random
