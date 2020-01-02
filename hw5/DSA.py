@@ -64,7 +64,7 @@ def gen_key():
     while True:
         p = q * k + 1
         if(MillerRabin(p)):
-            break;
+            break
         k = random.getrandbits(864)
     h = 2
     alpha = square_multiply(k,h,p)
